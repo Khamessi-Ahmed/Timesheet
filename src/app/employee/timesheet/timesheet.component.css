@@ -1,0 +1,619 @@
+/* Variables de couleurs et de styles */
+:root {
+  --primary: #3f51b5;
+  --primary-hover: #303f9f;
+  --primary-light: #e8eaf6;
+  --accent: #ffa500;
+  --accent-hover: #ff8c00;
+  --success: #4caf50;
+  --success-hover: #388e3c;
+  --warning: #ffc107;
+  --warning-hover: #ffa000;
+  --error: #f44336;
+  --error-hover: #d32f2f;
+  --background: #f5f7fa;
+  --text: #2b2d42;
+  --text-light: #6c7283;
+  --border: #e5e7eb;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 8px 15px -3px rgba(0, 0, 0, 0.15);
+  --radius: 4px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timesheet-container {
+  padding: 2rem;
+  background: var(--background);
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 2rem;
+}
+
+/* Header */
+.timesheet-header {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 1.875rem;
+  color: var(--text);
+  text-align: center;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.timesheet-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 2px;
+}
+
+/* Actions - Nouveaux styles pour les boutons */
+.timesheet-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.action-button {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+.action-button mat-icon {
+  margin-right: 4px !important;
+}
+
+.request-button {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+.request-button:hover {
+  background-color: var(--primary-hover) !important;
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3) !important;
+  transform: translateY(-2px) !important;
+}
+
+.refresh-button {
+  background-color: white !important;
+  color: var(--primary) !important;
+  border: 1px solid var(--primary) !important;
+}
+
+.refresh-button:hover {
+  background-color: var(--primary-light) !important;
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.15) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Main Layout */
+.main-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  height: 70vh;
+}
+
+/* Task Panel */
+.task-panel {
+  background: white;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-header mat-icon {
+  color: var(--primary);
+  background: rgba(63, 81, 181, 0.1);
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.task {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+  cursor: grab;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.task:hover {
+  transform: translateX(4px);
+  border-color: var(--primary);
+  box-shadow: 0 3px 6px rgba(63, 81, 181, 0.1);
+}
+
+.task-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(63, 81, 181, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.task-deadline {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+/* Task Details */
+.task-details {
+  position: fixed;
+  right: -400px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 380px;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  transition: var(--transition);
+  opacity: 0;
+  z-index: 1000;
+}
+
+.task-details.show {
+  right: 2rem;
+  opacity: 1;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.close-btn {
+  color: var(--text-light);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: var(--text);
+  transform: rotate(90deg);
+}
+
+.detail-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(63, 81, 181, 0.03);
+  border-radius: 8px;
+}
+
+.detail-item strong {
+  color: var(--text);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Calendar */
+.calendar-container {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  height: 100%;
+}
+
+.calendar-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.calendar-header h3 {
+  margin-bottom: 0.75rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* FullCalendar Customization */
+:host ::ng-deep {
+  .fc {
+    --fc-border-color: var(--border);
+    --fc-today-bg-color: rgba(63, 81, 181, 0.05);
+    --fc-event-bg-color: var(--primary);
+    --fc-event-border-color: transparent;
+    --fc-page-bg-color: white;
+  }
+
+  .fc-toolbar-title {
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .fc-button-primary {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    transition: var(--transition) !important;
+  }
+
+  .fc-button-primary:hover {
+    background: var(--primary-hover) !important;
+  }
+
+  .fc-event {
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-weight: 500;
+  }
+}
+
+/* Styles pour les congés */
+.conges-header {
+  margin-top: 2rem;
+}
+
+.conges-list {
+  margin-top: 0.5rem;
+}
+
+.conge-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: white;
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.conge-item:hover {
+  transform: translateX(4px);
+  border-color: var(--primary);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.conge-badge {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.conge-info {
+  flex: 1;
+}
+
+.conge-type {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.conge-dates {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.conge-status {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.conge-status.approuve {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.conge-status.refuse {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}
+
+.conge-status.en_attente {
+  background-color: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.no-conges {
+  text-align: center;
+  padding: 1rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* Styles pour les statuts dans les détails */
+.status-approuve {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.status-refuse {
+  color: #f44336;
+  font-weight: 500;
+}
+
+.status-en_attente {
+  color: #ffc107;
+  font-weight: 500;
+}
+
+/* Nouveau style de formulaire de congés basé sur l'image */
+.conges-form-container {
+  background: white;
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.form-title {
+  font-size: 1.75rem;
+  color: #000;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+}
+
+.form-subtitle {
+  color: #333;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.conges-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+  color: #000;
+}
+
+.required {
+  color: red;
+  margin-left: 2px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.form-control.invalid {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  color: #000;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: normal;
+}
+
+.date-fields {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.date-group {
+  flex: 1;
+}
+
+.date-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.date-input {
+  padding-right: 40px;
+}
+
+.date-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Cacher les styles par défaut de Material */
+:host ::ng-deep .mat-datepicker-toggle {
+  color: #000;
+}
+
+:host ::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0;
+  border-top: none;
+}
+
+.form-actions {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  margin-right: auto;
+}
+
+.btn-cancel:hover {
+  background-color: #e5e5e5;
+}
+
+.btn-submit {
+  background-color: #007bff;
+  color: white;
+  margin-left: auto;
+}
+
+.btn-submit:hover:not([disabled]) {
+  background-color: #0069d9;
+}
+
+.btn-submit[disabled] {
+  background-color: #b3d7ff;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .date-fields {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .conges-form-container {
+    padding: 1.5rem;
+  }
+}
+
+/* Styles pour le calendrier */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+/* Améliorer l'affichage du calendrier */
+:host ::ng-deep .fc-event {
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 3px 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+:host ::ng-deep .fc-daygrid-event {
+  white-space: normal;
+}
+
+:host ::ng-deep .fc-day-today {
+  background-color: rgba(63, 81, 181, 0.05) !important;
+}
+
+:host ::ng-deep .fc-button {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+  font-weight: 500 !important;
+}
+
+:host ::ng-deep .fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

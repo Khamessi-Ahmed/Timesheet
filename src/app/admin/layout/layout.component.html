@@ -1,0 +1,86 @@
+<div style="margin-left: 250px;">
+<app-nav-bar ></app-nav-bar>
+</div>
+<aside class="sidebar">
+    <!-- Logo -->
+    <div class="logo">
+      <h1 class="logo-text">TUNISYS</h1>
+      <p class="logo-tagline">securing your future</p>
+    </div>
+  
+    <!-- Navigation Menu -->
+    <nav class="nav-menu">
+      <ul>
+        <li (click)="currentView = 'dashboard'" [class.active]="currentView === 'dashboard'">
+          <a  class="nav-link">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li (click)="currentView = 'project'" [class.active]="currentView === 'project'">
+          <a  class="nav-link">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </span>
+            <span>Project</span>
+          </a>
+        </li>
+        <li (click)="currentView = 'profils'" [class.active]="currentView === 'profils'">
+          <a  class="nav-link">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="7"></circle>
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+              </svg>
+            </span>
+            <span>Profiles</span>
+          </a>
+        </li>
+        <li (click)="currentView = 'notification'" [class.active]="currentView === 'notification'">
+          <a  class="nav-link">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+            </span>
+            <span>Notification</span>
+          </a>
+        </li>
+        <li (click)="currentView = 'report'" [class.active]="currentView === 'report'">
+          <a class="nav-link">
+            <span class="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </span>
+            <span>Report</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+  
+  <div class="content" style="margin-left: 250px;">
+    <ng-container [ngSwitch]="currentView">
+      <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+      <app-projet *ngSwitchCase="'project'"></app-projet>
+      <app-profile *ngSwitchCase="'profils'"></app-profile>
+      <app-notification *ngSwitchCase="'notification'"></app-notification>
+      <app-rapport *ngSwitchCase="'report'"></app-rapport>
+      <p *ngSwitchDefault>Select a view from the sidebar</p>
+    </ng-container>
+  </div>

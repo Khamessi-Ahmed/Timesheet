@@ -1,0 +1,116 @@
+<app-dashboard></app-dashboard>
+<div class="dashboard-container">
+  <!-- Top row -->
+  <div class="dashboard-row">
+    <!-- Projects Progress Card -->
+    <div class="dashboard-card">
+      <div class="bar-chart-container">
+        <canvas #activeUsersChart></canvas>
+      </div>
+      <div class="card-content">
+        <div class="card-title">
+          <h2>Avancement des Projets</h2>
+          <span class="trend-indicator positive">
+            (+23) depuis la semaine dernière
+          </span>
+        </div>
+        <div class="metrics-container">
+          <div class="metric">
+            <div class="metric-icon projects">
+              <i class="icon-projects"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{dashboardOverview?.totalProjects || 0}}</span>
+              <span class="metric-label">Projets</span>
+            </div>
+          </div>
+          <div class="metric">
+            <div class="metric-icon clicks">
+              <i class="icon-clicks"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{dashboardOverview?.completedProjects || 0}}</span>
+              <span class="metric-label">Terminés</span>
+            </div>
+          </div>
+          <div class="metric">
+            <div class="metric-icon spent">
+              <i class="icon-spent"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{dashboardOverview?.totalTasks || 0}}</span>
+              <span class="metric-label">Tâches</span>
+            </div>
+          </div>
+          <div class="metric">
+            <div class="metric-icon notes">
+              <i class="icon-notes"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-value">{{dashboardOverview?.delayedTasks || 0}}</span>
+              <span class="metric-label">Retards</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tasks Overview Card -->
+    <div class="dashboard-card">
+      <div class="card-content">
+        <div class="card-title">
+          <h2>Aperçu des Tâches</h2>
+          <span class="trend-indicator positive">
+            (+5) plus en {{currentYear}}
+          </span>
+        </div>
+        <div class="chart-container area-chart">
+          <canvas #salesChart></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom row -->
+  <div class="dashboard-row">
+    <!-- Team Workload Card -->
+    <div class="dashboard-card">
+      <div class="card-content">
+        <div class="card-title">
+          <h2>Charge par Département</h2>
+        </div>
+        <div class="chart-container column-chart">
+          <canvas #deviceChart></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delayed Tasks Card -->
+    <div class="dashboard-card">
+      <div class="card-content">
+        <div class="card-title">
+          <h2>Tâches en Retard par Projet</h2>
+        </div>
+        <div class="chart-container donut-chart">
+          <div class="donut-chart-container">
+            <canvas #locationChart></canvas>
+          </div>
+          <div class="legend-container" *ngIf="delayedTasks && delayedTasks.delaysByProject.length > 0">
+            <div class="legend-item" *ngFor="let project of delayedTasks.delaysByProject.slice(0, 4); let i = index">
+              <div class="legend-dot" [class]="getColorClass(i)"></div>
+              <span class="legend-label">{{project.projectName}}</span>
+              <span class="legend-value">{{getDelayPercentage(i)}}</span>
+            </div>
+          </div>
+          <div class="legend-container" *ngIf="!delayedTasks || delayedTasks.delaysByProject.length === 0">
+            <div class="legend-item">
+              <div class="legend-dot us"></div>
+              <span class="legend-label">Aucune tâche en retard</span>
+              <span class="legend-value">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>

@@ -1,0 +1,269 @@
+<app-dashboard></app-dashboard>
+<div class="dashboard-container">
+  <div class="container">
+    <div class="header">
+      <div class="header-left">
+        <h1>Tache</h1>
+        <div class="date-range">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>{{ projectDetails?.startDate | date: 'MMM d' }} - {{ projectDetails?.endDate | date: 'MMM d' }}</span>
+        </div>
+      </div>
+      <div class="header-buttons">
+        <button class="report-btn" (click)="generatePdfReport()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          GÉNÉRER RAPPORT
+        </button>
+        <button class="create-btn" (click)="openTaskModal()">CREER NEW TACHE</button>
+        <button class="progress-btn" (click)="toggleProgressSection()">
+          {{ showProgressSection ? 'MASQUER PROGRESSION' : 'VOIR PROGRESSION' }}
+        </button>
+        <button class="exit-btn" (click)="rout()">EXIT</button>
+      </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="progress-section" *ngIf="showProgressSection">
+      <div class="progress-cards">
+        <!-- Progress Card -->
+        <div class="progress-card">
+          <div class="card-header">
+            <h3>Progression globale</h3>
+            <div class="percentage">{{ projectProgress?.progressPercentage || 0 }}%</div>
+          </div>
+          <div class="card-content">
+            <div class="chart-container">
+              <canvas id="progressChart"></canvas>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-label">Tâches terminées</div>
+                <div class="stat-value">{{ projectProgress?.completedTasks || 0 }}/{{ projectProgress?.totalTasks || 0 }}</div>
+              </div>
+            
+              <div class="stat-box">
+                <div class="stat-label">Retard moyen</div>
+                <div class="stat-value">{{ projectProgress?.averageDelay || 0 }} jours</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribution Card -->
+        <div class="progress-card">
+          <div class="card-header">
+            <h3>Distribution des tâches</h3>
+          </div>
+          <div class="card-content">
+            <div class="chart-container">
+              <canvas id="distributionChart"></canvas>
+            </div>
+            <div class="employee-stats">
+              <div class="employee-row" *ngFor="let emp of tasksDistribution?.employeeDistribution">
+                <div class="employee-name">{{ emp.employeeName }}</div>
+                <div class="employee-count">{{ emp.tasksCount }} ({{ emp.percentage }}%)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Table -->
+    <div class="table">
+      <div class="table-header">
+        <div class="column description">DESCRIPTION</div>
+        <div class="column date">DEBUT DATE</div>
+        <div class="column status">STATUS</div>
+        <div class="column date">END DATE</div>
+        <div class="column actions">ACTIONS</div>
+      </div>
+
+      <div class="table-body">
+        <div class="table-row" *ngFor="let task of tasks">
+          <div class="column description">
+            <span>{{ task.description }}</span>
+          </div>
+          <div class="column date">
+            <span>{{ task.debutdateAffaire | date: 'shortDate' }}</span>
+          </div>
+          <div class="column status">
+            <span class="status-badge" [ngClass]="{ 'status-done': task.etat, 'status-working': !task.etat }">
+              {{ getStatus(task) }}
+            </span>
+          </div>
+          <div class="column date">
+            <span>{{ task.FindateAffaire | date: 'shortDate' }}</span>
+          </div>
+          <div class="column actions">
+            <button class="more-btn">⋮</button>
+          </div>
+        </div>
+
+        <!-- No tasks message -->
+        <div *ngIf="tasks?.length === 0" class="no-tasks">
+          <p>No tasks available for this project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="modal" *ngIf="showTaskModal">
+    <div class="modal-overlay" (click)="closeTaskModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Nouvelle Tâche</h3>
+        <button class="close-btn" (click)="closeTaskModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <form class="modal-body" (submit)="submitTask()">
+        <div class="form-group">
+          <label for="taskDescription">Description</label>
+          <div class="input-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+              <line x1="21" y1="10" x2="3" y2="10"></line>
+              <line x1="21" y1="6" x2="3" y2="6"></line>
+              <line x1="21" y1="14" x2="3" y2="14"></line>
+              <line x1="21" y1="18" x2="3" y2="18"></line>
+            </svg>
+            <textarea 
+              id="taskDescription"
+              [(ngModel)]="newTask.description" 
+              name="description" 
+              placeholder="Description détaillée de la tâche"
+              rows="3"
+              required></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          
+  
+        </div>
+
+        <div class="form-group">
+          <label for="deadline">Date limite</label>
+          <div class="input-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <input 
+              type="date" 
+              id="deadline"
+              [(ngModel)]="newTask.deadline" 
+              name="deadline" 
+              required>
+          </div>
+        </div>
+
+        <!-- User Assignment Section -->
+        <div class="form-section">
+          <h4 class="section-title">Assignation</h4>
+          
+          <div class="assignment-type">
+            <div class="radio-group">
+              <input type="radio" id="assignEmployee" name="assignType" value="employee" [(ngModel)]="assignType">
+              <label for="assignEmployee">Assigner à un employé</label>
+            </div>
+            <div class="radio-group">
+              <input type="radio" id="assignManager" name="assignType" value="manager" [(ngModel)]="assignType">
+              <label for="assignManager">Assigner à un manager</label>
+            </div>
+          </div>
+
+          <!-- Employee Selection -->
+          <div class="form-group" *ngIf="assignType === 'employee'">
+            <label for="employeeSelect">Employé assigné</label>
+            <div class="input-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <select 
+                id="employeeSelect"
+                [(ngModel)]="selectedEmployeeId" 
+                name="employeeId"
+                class="employee-select"
+                [required]="assignType === 'employee'">
+                <option [ngValue]="null" disabled>Sélectionner un employé</option>
+                <option *ngFor="let employee of employees" [ngValue]="employee.id">
+                  {{ employee.nom }} {{ employee.prenom }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Manager Selection -->
+          <div class="form-group" *ngIf="assignType === 'manager'">
+            <label for="managerSelect">Manager assigné</label>
+            <div class="input-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <select 
+                id="managerSelect"
+                [(ngModel)]="selectedManagerId" 
+                name="managerId"
+                class="manager-select"
+                [required]="assignType === 'manager'">
+                <option [ngValue]="null" disabled>Sélectionner un manager</option>
+                <option *ngFor="let manager of managers" [ngValue]="manager.id">
+                  {{ manager.nom }} {{ manager.prenom }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <div class="checkbox-container">
+            <input 
+              type="checkbox" 
+              id="taskStatus"
+              [(ngModel)]="newTask.etat" 
+              name="etat">
+            <label for="taskStatus">Tâche terminée</label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeTaskModal()">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Créer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- PDF Report Generation Loading Modal -->
+  <div class="modal" *ngIf="isGeneratingPdf">
+    <div class="modal-overlay"></div>
+    <div class="modal-content pdf-loading-modal">
+      <div class="pdf-loading-spinner"></div>
+      <h3>Génération du rapport en cours...</h3>
+      <p>Veuillez patienter pendant que nous préparons votre rapport PDF.</p>
+    </div>
+  </div>
+</div>

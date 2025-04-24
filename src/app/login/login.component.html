@@ -1,0 +1,71 @@
+<div class="login-page">
+
+    
+    <div class="login-container">
+      <div class="login-form-container">
+        <div class="logo">
+          <h1 class="logo-text">TUNISYS</h1>
+          <p class="logo-tagline">securing your future</p>
+        </div>
+        
+        <h2 class="login-title">Login into your account</h2>
+        
+        <form>
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <div class="input-container">
+              <input 
+                type="email" 
+                id="email" 
+                Name="email" 
+                placeholder="alex@email.com"
+                [(ngModel)]="loginObj.email" [ngModelOptions]="{standalone: true}"
+              >
+              <button type="button" class="icon-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                </svg>
+              </button>
+            </div>
+
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-container">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                id="password" 
+                Name="password" 
+                placeholder="Enter your password"
+                [(ngModel)]="loginObj.password" [ngModelOptions]="{standalone: true}" 
+              >
+              <button type="button" class="icon-button" (click)="togglePasswordVisibility()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                  <rect width="18" height="11" x="3" y="6" rx="2" ry="2"></rect>
+                  <path d="M7 12h.01M12 12h.01M17 12h.01"></path>
+                </svg>
+              </button>
+            </div>
+
+            <div class="forgot-password">
+              <a href="#" >Forgot password?</a>
+            </div>
+          </div>
+          
+          <button type="button" class="login-button"(click)="login()" >Login now</button>
+          
+          <div class="divider">
+            <span>OR</span>
+          </div>
+          
+          <button type="button" class="signup-button">Signup now</button>
+        </form>
+      </div>
+      
+      <div class="login-illustration">
+        <img src="https://winnerseducation.org/assets/image/become-instructor/create-account.svg" alt="Login security illustration">
+      </div>
+    </div>
+  </div>

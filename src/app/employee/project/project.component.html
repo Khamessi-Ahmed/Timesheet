@@ -1,0 +1,186 @@
+<app-dashboard></app-dashboard>
+<div class="all">
+    <div class="container">
+       
+        
+        <div class="subheader">
+            <div class="done-count">
+                <span class="dot"></span>
+                <span class="count">{{ projects.length }} projects</span>
+                <span class="period">this month</span>
+            </div>
+        </div>
+        
+        <div class="table">
+            <div class="table-header">
+                <div class="column companies">NOM PROJET</div>
+                <div class="column budget">MANAGER</div>
+                <div class="column status">STATUS</div>
+                <div class="column completion">COMPLETION</div>
+                <div class="column actions"></div>
+            </div>
+            
+            <div class="table-row" *ngFor="let project of projects">
+                <div class="column companies">
+                    <div class="project-icon"></div>
+                    <span>{{ project.nom }}</span>
+                </div>
+                <div class="column budget-col">
+                    <button class="enter-btn" (click)="enterProject(project.id)">ENTRER</button>
+                    <div class="budget">ID: {{ project.idmanager }}</div>
+                </div>
+                <div class="column status">
+                    <span class="status-badge" [class.validated]="project.valider">
+                        {{ project.valider ? 'Validé' : 'En attente' }}
+                    </span>
+                </div>
+                <div class="column completion">
+                    <div class="percentage">{{ getCompletion(project) }}%</div>
+                    <div class="progress-bar">
+                        <div class="progress" 
+                            [style.width.%]="getCompletion(project)" 
+                            [style.background-color]="project.valider ? '#10B981' : '#3B82F6'">
+                        </div>
+                    </div>
+                </div>
+                <div class="column actions">
+                    <button class="more-btn" (click)="openProjectForm(project)">⋮</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Improved Project Form Modal -->
+    <div class="modal" *ngIf="showProjectModal" @modalAnimation>
+        <div class="modal-overlay" (click)="closeModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>{{ isEditMode ? 'Modifier le Projet' : 'Nouveau Projet' }}</h3>
+                <button class="close-btn" (click)="closeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <form class="modal-body" (submit)="handleProjectSubmit()">
+                <div class="form-group">
+                    <label for="projectName">Nom du projet</label>
+                    <div class="input-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        <input 
+                            type="text" 
+                            id="projectName"
+                            [ngModel]="currentProject.nom" 
+                            (ngModelChange)="currentProject.nom = $event"
+                            name="nom" 
+                            placeholder="Entrez le nom du projet"
+                            required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate">Date de début</label>
+                        <div class="input-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <input 
+                                type="date" 
+                                id="startDate"
+                                [ngModel]="currentProject.startDate" 
+                                (ngModelChange)="currentProject.startDate = $event"
+                                name="startDate" 
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">Date de fin</label>
+                        <div class="input-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <input 
+                                type="date" 
+                                id="endDate"
+                                [ngModel]="currentProject.endDate" 
+                                (ngModelChange)="currentProject.endDate = $event"
+                                name="endDate" 
+                                required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="managerId">Manager responsable</label>
+                    <div class="input-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <input 
+                            type="number" 
+                            id="managerId"
+                            [ngModel]="currentProject.idmanager" 
+                            (ngModelChange)="currentProject.idmanager = $event"
+                            name="idmanager" 
+                            placeholder="ID du manager"
+                            required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="projectDescription">Description du projet</label>
+                    <div class="input-container textarea-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                            <line x1="21" y1="10" x2="3" y2="10"></line>
+                            <line x1="21" y1="6" x2="3" y2="6"></line>
+                            <line x1="21" y1="14" x2="3" y2="14"></line>
+                            <line x1="21" y1="18" x2="3" y2="18"></line>
+                        </svg>
+                        <textarea 
+                            id="projectDescription"
+                            [ngModel]="currentProject.description" 
+                            (ngModelChange)="currentProject.description = $event"
+                            name="description" 
+                            placeholder="Description détaillée du projet"
+                            rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <div class="checkbox-container">
+                        <input 
+                            type="checkbox" 
+                            id="priority"
+                            [ngModel]="currentProject.priority" 
+                            (ngModelChange)="currentProject.priority = $event"
+                            name="priority">
+                        <label for="priority">Projet prioritaire</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+                        Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

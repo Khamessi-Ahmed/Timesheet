@@ -1,0 +1,74 @@
+<div style="margin-left: 250px;">
+    <app-nav-bar></app-nav-bar>
+    </div>
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="logo">
+          <h1 class="logo-text">TUNISYS</h1>
+          <p class="logo-tagline">securing your future</p>
+        </div>
+      
+        <!-- Navigation Menu -->
+        <nav class="nav-menu">
+          <ul>
+            <li (click)="currentView = 'dashboard'" [class.active]="currentView === 'dashboard'">
+                <a  class="nav-link">
+                  <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="3" width="7" height="7"></rect>
+                      <rect x="14" y="14" width="7" height="7"></rect>
+                      <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                  </span>
+                  <span>dashboard</span>
+                </a>
+              </li>
+            <li (click)="currentView = 'timeSheet'" [class.active]="currentView === 'timeSheet'">
+              <a  class="nav-link">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                  </svg>
+                </span>
+                <span>timeSheet</span>
+              </a>
+            </li>
+            <li (click)="currentView = 'project'" [class.active]="currentView === 'project'">
+              <a  class="nav-link">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </span>
+                <span>Project</span>
+              </a>
+            </li>
+            <li (click)="currentView = 'Notification'" [class.active]="currentView === 'Notification'">
+              <a  class="nav-link">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                  </svg>
+                </span>
+                <span>Notification</span>
+              </a>
+            </li>
+  
+          </ul>
+        </nav>
+      </aside>
+      
+      <div class="content" style="margin-left: 250px;">
+        <ng-container [ngSwitch]="currentView">
+            <app-man-timesheet *ngSwitchCase="'timeSheet'"></app-man-timesheet>
+            <app-man-project *ngSwitchCase="'project'"></app-man-project>
+            <app-man-notification *ngSwitchCase="'Notification'"></app-man-notification>
+            <app-man-dashboard *ngSwitchCase="'dashboard'"></app-man-dashboard>
+          <p *ngSwitchDefault>Select a view from the sidebar</p>
+        </ng-container>
+      </div>

@@ -1,0 +1,38 @@
+<div class="notification-container">
+  <h2 class="notification-header">
+    <i class="fas fa-bell"></i>
+    Notifications
+    <span class="notification-count">{{ notifications.length }}</span>
+  </h2>
+
+  <div *ngIf="notifications.length === 0" class="no-notifications">
+    <p>Aucune notification disponible</p>
+  </div>
+
+  <div *ngFor="let notification of notifications" 
+       class="notification-card"
+       [ngClass]="notification.type">
+    <div class="notification-content">
+      <h3 class="notification-title">
+        <i class="fas fa-exclamation-triangle"></i>
+        Alerte sur le projet {{notification.project?.nom}}
+      </h3>
+      
+      <div class="message-content" [innerHTML]="notification.description"></div>
+      
+      <div class="notification-footer">
+        <small class="notification-time">
+          <i class="fas fa-clock"></i>
+          {{ notification.createdDate | date: 'dd/MM/yy HH:mm' }}
+        </small>
+        
+        <button class="delete-button" 
+                (click)="deleteNotification(notification.id!)"
+                aria-label="Supprimer la notification">
+          <i class="fas fa-trash"></i>
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

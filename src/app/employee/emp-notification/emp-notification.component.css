@@ -1,0 +1,112 @@
+/* Styles améliorés */
+.notification-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.notification-count {
+  background: #e74c3c;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9em;
+}
+
+.notification-card {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid;
+  background: #f8f9fa;
+  transition: transform 0.2s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-2px);
+}
+
+.notification-title {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.message-content {
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+}
+
+.notification-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.notification-time {
+  color: #718096;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.delete-button {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.delete-button:hover {
+  background: rgba(231, 76, 60, 0.2);
+}
+
+.delete-button:active {
+  transform: scale(0.98);
+}
+
+/* Couleurs des types */
+.warning {
+  border-color: #f1c40f;
+  background: #fef9e7;
+}
+
+.info {
+  border-color: #3498db;
+  background: #ebf5fb;
+}
+
+.success {
+  border-color: #2ecc71;
+  background: #e8f6f3;
+}
+
+.error {
+  border-color: #e74c3c;
+  background: #f9ebea;
+}

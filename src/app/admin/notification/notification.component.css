@@ -1,0 +1,87 @@
+.notification-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .no-notifications {
+    font-size: 1.2rem;
+    color: #777;
+    text-align: center;
+  }
+  
+  .notification {
+    position: relative;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: background 0.3s ease-in-out;
+  }
+  
+  /* Notification Content */
+  .notification-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notification h3 {
+    font-size: 1.4rem;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .notification p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .notification small {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  /* Delete Trash Icon */
+  .delete-icon {
+    font-size: 1.2rem;
+    color: #dc3545;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .notification:hover .delete-icon {
+    opacity: 1;
+  }
+  
+  /* Notification Types */
+  .success {
+    background-color: #d4edda;
+    border-left: 5px solid #28a745;
+  }
+  
+  .error {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+  }
+  
+  .info {
+    background-color: #cce5ff;
+    border-left: 5px solid #007bff;
+  }

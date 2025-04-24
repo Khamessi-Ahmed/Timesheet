@@ -1,0 +1,18 @@
+<div class="notification-container">
+    <h2>Notifications</h2>
+    
+    <div *ngIf="notifications.length === 0" class="no-notifications">
+      <p>No notifications available.</p>
+    </div>
+  
+    <div *ngFor="let notification of notifications; let i = index" class="notification" [ngClass]="notification.type">
+      <div class="notification-content">
+        <h3>{{ notification.title }}</h3>
+        <p>{{ notification.message }}</p>
+        <small>{{ notification.date | date: 'short' }}</small>
+      </div>
+      
+      <!-- Trash Icon -->
+      <i class="fas fa-trash delete-icon" (click)="deleteNotification(i)"></i>
+    </div>
+  </div>
