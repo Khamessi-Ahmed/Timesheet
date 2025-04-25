@@ -5,10 +5,11 @@ import { ManProjectComponent } from "../man-project/man-project.component";
 import { ManTimesheetComponent } from "../man-timesheet/man-timesheet.component";
 import { NavBarComponent } from "../../nav-bar/nav-bar.component";
 import { ManDashboardComponent } from "../man-dashboard/man-dashboard.component";
+import { CongesComponent } from "../conges/conges.component";
 
 @Component({
   selector: 'app-man-layout',
-  imports: [CommonModule, ManNotificationComponent, ManProjectComponent, ManTimesheetComponent, NavBarComponent, ManDashboardComponent],
+  imports: [CommonModule, ManNotificationComponent, ManProjectComponent, ManTimesheetComponent, NavBarComponent, ManDashboardComponent, CongesComponent],
   templateUrl: './man-layout.component.html',
   styleUrl: './man-layout.component.css'
 })

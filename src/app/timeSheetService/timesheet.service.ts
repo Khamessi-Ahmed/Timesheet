@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 import { HttpClient, type HttpErrorResponse } from "@angular/common/http"
-import { type Observable, throwError } from "rxjs"
+import { type Observable, throwError, of } from "rxjs"
 import { catchError, tap } from "rxjs/operators"
 
 @Injectable({
@@ -65,6 +65,15 @@ export class TimesheetService {
       catchError(this.handleError),
     )
   }
+  getCongesGererByManager(managerId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/congesGererBymanager/${managerId}`).pipe(
+      tap((data) => console.log(`Congés gérés par le manager ${managerId}:`, data)),
+      catchError((error) => {
+        console.error(`Erreur lors de la récupération des congés gérés par le manager ${managerId}:`, error)
+        return of([])
+      }),
+    )
+  }
 
   getCongesByEmployee(employeeId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/conges/employee/${employeeId}`).pipe(
@@ -86,7 +95,12 @@ export class TimesheetService {
       catchError(this.handleError),
     )
   }
-
+  deleteConges(congesId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/conges/${congesId}`).pipe(
+      tap(() => console.log(`Congé ${congesId} supprimé avec succès`)),
+      catchError(this.handleError),
+    )
+  }
   // Méthode pour formater les dates correctement pour le backend
   private formatDate(date: Date): string {
     if (!(date instanceof Date)) {
