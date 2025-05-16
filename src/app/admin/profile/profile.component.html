@@ -1,122 +1,215 @@
 <app-dashboard></app-dashboard>
 <div class="user-management">
-    <div class="header">
-      <div class="title-section">
-        <h1>All Customers</h1>
-        <p class="subtitle">Active Members</p>
+  <div class="header">
+    <div class="title-section">
+      <h1>Gestion des Utilisateurs</h1>
+      <p class="subtitle">Membres Actifs</p>
+    </div>
+    <div class="actions-section">
+      <div class="search-container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" placeholder="Rechercher" class="search-input">
       </div>
-      <div class="actions-section">
-        <div class="search-container">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" placeholder="Search" class="search-input">
+      <div class="sort-container">
+        <span>Trier par:</span>
+        <div class="sort-dropdown">
+          <span>Plus récent</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </div>
-        <div class="sort-container">
-          <span>Sort by:</span>
-          <div class="sort-dropdown">
-            <span>Newest</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </div>
-        </div>
       </div>
     </div>
-  
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Prénom</th>
-            <th>Nom</th>
-            <th>Email</th>
-            <th>Rôle</th>
-            <th>Département</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (user of users; track user.id) {
-          <tr>
-            <td>{{ user.prenom }}</td>
-            <td>{{ user.nom }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role }}</td>
-            <td>{{ user.departement }}</td>
-            <td class="actions-cell">
-              <button class="edit-btn" (click)="editUser(user)">Éditer</button>
-              <button class="delete-btn" (click)="deleteUser(user.id, user.role)">Supprimer</button>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Département</th>
+          <th>Date d'entrée</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users; track user.id) {
+        <tr>
+          <td>{{ user.prenom }}</td>
+          <td>{{ user.nom }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.departement }}</td>
+          <td>{{ formatDate(user.datedelentree) }}</td>
+          <td class="actions-cell">
+            <button class="edit-btn" (click)="editUser(user)">Éditer</button>
+            <button class="delete-btn" (click)="deleteUser(user.id, user.role)">Supprimer</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <span class="pagination-info">Affichage des données 1 à 8 sur 256 entrées</span>
+    <div class="pagination-controls">
+      <button class="pagination-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+      <button class="pagination-number active">1</button>
+      <button class="pagination-number">2</button>
+      <button class="pagination-number">3</button>
+      <button class="pagination-number">4</button>
+      <span class="pagination-ellipsis">...</span>
+      <button class="pagination-number">40</button>
+      <button class="pagination-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
     </div>
-  
-    <div class="pagination">
-      <span class="pagination-info">Showing data 1 to 8 of 256K entries</span>
-      <div class="pagination-controls">
-        <button class="pagination-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-        <button class="pagination-number active">1</button>
-        <button class="pagination-number">2</button>
-        <button class="pagination-number">3</button>
-        <button class="pagination-number">4</button>
-        <span class="pagination-ellipsis">...</span>
-        <button class="pagination-number">40</button>
-        <button class="pagination-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-      </div>
-    </div>
-  
-    <!-- Keep the existing modal functionality -->
-    @if (showModal) {
+  </div>
+
+  <!-- Modal with expanded form fields -->
+  @if (showModal) {
     <div class="modal">
       <div class="modal-content">
         <span class="close" (click)="closeModal()">&times;</span>
         <h3>{{ isEditMode ? 'Modifier Utilisateur' : 'Nouvel Utilisateur' }}</h3>
-        <form (ngSubmit)="submitForm()" #userForm="ngForm">
-          <div class="form-group">
-            <label>Prénom:</label>
-            <input type="text" [(ngModel)]="newUser.prenom" name="prenom" required>
-          </div>
+        <form (ngSubmit)="submitForm(userForm)" #userForm="ngForm">
+          <!-- Form sections -->
+          <div class="form-section">
+            <h4>Informations Personnelles</h4>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prenom">Prénom <span class="required">*</span></label>
+                <input type="text" id="prenom" [(ngModel)]="newUser.prenom" name="prenom" 
+                       required #prenomInput="ngModel">
+                @if (prenomInput.invalid && (prenomInput.touched || userForm.submitted)) {
+                <div class="error-message">Ce champ est obligatoire</div>
+                }
+              </div>
+    
+              <div class="form-group">
+                <label for="nom">Nom <span class="required">*</span></label>
+                <input type="text" id="nom" [(ngModel)]="newUser.nom" name="nom" 
+                       required #nomInput="ngModel">
+                @if (nomInput.invalid && (nomInput.touched || userForm.submitted)) {
+                <div class="error-message">Ce champ est obligatoire</div>
+                }
+              </div>
+            </div>
   
-          <div class="form-group">
-            <label>Nom:</label>
-            <input type="text" [(ngModel)]="newUser.nom" name="nom" required>
-          </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="dateDenaissance">Date de naissance</label>
+                <input type="date" id="dateDenaissance" [(ngModel)]="newUser.dateDenaissance" name="dateDenaissance">
+              </div>
   
-          <div class="form-group">
-            <label>Email:</label>
-            <input type="email" [(ngModel)]="newUser.email" name="email" required>
-          </div>
+              <div class="form-group">
+                <label for="carteCin">Numéro CIN <span class="required">*</span></label>
+                <input type="text" id="carteCin" [(ngModel)]="newUser.carteCin" name="carteCin" 
+                       required pattern="\d{8}" #cinInput="ngModel"
+                       placeholder="8 chiffres">
+                @if (cinInput.invalid && (cinInput.touched || userForm.submitted)) {
+                <div class="error-message">
+                  @if (cinInput.errors?.['required']) { Ce champ est obligatoire }
+                  @if (cinInput.errors?.['pattern']) { Doit contenir 8 chiffres }
+                </div>
+                }
+              </div>
+            </div>
   
-          @if (!isEditMode) {
+            <div class="form-group">
+              <label for="adresse">Adresse</label>
+              <textarea id="adresse" [(ngModel)]="newUser.adresse" name="adresse" rows="2"></textarea>
+            </div>
+  
+            <div class="form-group">
+              <label for="telefone">Téléphone <span class="required">*</span></label>
+              <input type="tel" id="telefone" [(ngModel)]="newUser.telefone" name="telefone" 
+                     required pattern="\d{8}" #telefoneInput="ngModel"
+                     placeholder="21612345678">
+              @if (telefoneInput.invalid && (telefoneInput.touched || userForm.submitted)) {
+              <div class="error-message">
+                @if (telefoneInput.errors?.['required']) { Ce champ est obligatoire }
+                @if (telefoneInput.errors?.['pattern']) { Doit contenir 8 chiffres }
+              </div>
+              }
+            </div>
+          </div>
+
+        <div class="form-section">
+          <h4>Informations Professionnelles</h4>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input type="email" id="email" [(ngModel)]="newUser.email" name="email" required>
+            </div>
+  
+            @if (!isEditMode) {
+            <div class="form-group">
+              <label for="password">Mot de passe <span class="required">*</span></label>
+              <input type="password" id="password" [(ngModel)]="newUser.password" name="password" required>
+            </div>
+            }
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="role">Rôle <span class="required">*</span></label>
+              <select id="role" [(ngModel)]="newUser.role" name="role" required>
+                <option value="EMPLOYE">Employé</option>
+                <option value="MANAGER">Manager</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for="departement">Département <span class="required">*</span></label>
+              <select id="departement" [(ngModel)]="newUser.departement" name="departement" required>
+                <option value="" disabled>Sélectionnez un département</option>
+                @for (dept of departmentOptions; track dept) {
+                  <option [value]="dept">{{ dept }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="niveauScolaire">Niveau Scolaire</label>
+              <select id="niveauScolaire" [(ngModel)]="newUser.niveauScolaire" name="niveauScolaire">
+                <option value="" disabled>Sélectionnez un niveau</option>
+                @for (level of educationLevelOptions; track level) {
+                  <option [value]="level">{{ level }}</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="datedelentree">Date d'entrée</label>
+              <input type="date" id="datedelentree" [(ngModel)]="newUser.datedelentree" name="datedelentree">
+              <small class="form-hint">Date d'aujourd'hui par défaut</small>
+            </div>
+          </div>
+
+          @if (newUser.role === 'EMPLOYE' || newUser.role === 'MANAGER') {
           <div class="form-group">
-            <label>Mot de passe:</label>
-            <input type="password" [(ngModel)]="newUser.password" name="password" required>
+            <label for="hourswaorked">Heures travaillées</label>
+            <input type="number" id="hourswaorked" [(ngModel)]="newUser.hourswaorked" name="hourswaorked" min="0">
           </div>
           }
+        </div>
   
-          <div class="form-group">
-            <label>Rôle:</label>
-            <select [(ngModel)]="newUser.role" name="role" required>
-              <option value="EMPLOYE">Employé</option>
-              <option value="manager">Manager</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-  
-          <div class="form-group">
-            <label>Département:</label>
-            <input type="text" [(ngModel)]="newUser.departement" name="departement" required>
-          </div>
-  
-          <div class="form-actions">
-            <button type="button" class="cancel-btn" (click)="closeModal()">Annuler</button>
-            <button type="submit" [disabled]="!userForm.valid">Enregistrer</button>
-          </div>
-        </form>
-      </div>
+        
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Annuler</button>
+          <button type="submit" [disabled]="userForm.invalid">Enregistrer</button>
+        </div>
+      </form>
     </div>
-    }
-  
-    <button class="create-user-btn" (click)="createUser()">Créer un nouvel utilisateur</button>
   </div>
-  
-  
+  }
+
+
+  <button class="create-user-btn" (click)="createUser()">Créer un nouvel utilisateur</button>
+</div>

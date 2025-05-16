@@ -84,9 +84,9 @@
     <div class="table">
       <div class="table-header">
         <div class="column description">DESCRIPTION</div>
-        <div class="column date">DEBUT DATE</div>
+
         <div class="column status">STATUS</div>
-        <div class="column date">END DATE</div>
+   
         <div class="column actions">ACTIONS</div>
       </div>
 
@@ -95,17 +95,13 @@
           <div class="column description">
             <span>{{ task.description }}</span>
           </div>
-          <div class="column date">
-            <span>{{ task.debutdateAffaire | date: 'shortDate' }}</span>
-          </div>
+        
           <div class="column status">
             <span class="status-badge" [ngClass]="{ 'status-done': task.etat, 'status-working': !task.etat }">
               {{ getStatus(task) }}
             </span>
           </div>
-          <div class="column date">
-            <span>{{ task.FindateAffaire | date: 'shortDate' }}</span>
-          </div>
+         
           <div class="column actions">
             <button class="more-btn">⋮</button>
           </div>

@@ -31,9 +31,9 @@ export class AuthService {
     // Nettoyage de toutes les données d'authentification
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    localStorage.removeItem('adminData');
-    localStorage.removeItem('employeData');
-    localStorage.removeItem('managerData');
+    localStorage.removeItem('ADMINData');
+    localStorage.removeItem('EMPLOYEData');
+    localStorage.removeItem('MANAGERData');
   }
 
   getToken(): string | null {

@@ -1,0 +1,259 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+}
+
+.timesheet-container {
+  background-color: #f8f9fa;
+  color: #2d3748;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 10px;
+}
+
+.subheader {
+  margin-bottom: 30px;
+}
+
+.done-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #10b981;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.count {
+  color: #a0aec0;
+  font-weight: 500;
+}
+
+.period {
+  color: #a0aec0;
+}
+
+/* Tableau des timesheets */
+.table-responsive {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.timesheet-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timesheet-table th {
+  padding: 16px 20px;
+  text-align: left;
+  color: #718096;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.timesheet-table td {
+  padding: 20px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.timesheet-table tr:last-child td {
+  border-bottom: none;
+}
+
+.timesheet-table tr:hover {
+  background-color: #f7fafc;
+}
+
+/* Styles pour les badges de statut */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #ebf8ff;
+  color: #3182ce;
+}
+
+.status-validated {
+  background-color: #e6fffa;
+  color: #10b981;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #e53e3e;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+/* Contrôles de validation */
+.actions-cell {
+  min-width: 300px;
+}
+
+.validation-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background-color: #f7fafc;
+  font-size: 14px;
+  color: #2d3748;
+  flex-grow: 1;
+  transition: all 0.2s;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  background-color: white;
+}
+
+.validate-btn,
+.enter-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: none;
+  white-space: nowrap;
+}
+
+.validate-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.validate-btn:hover {
+  background-color: #2563eb;
+}
+
+.enter-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.enter-btn:hover {
+  background-color: #0ea271;
+}
+
+.validate-btn:disabled,
+.enter-btn:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+}
+
+/* Détails de l'employé */
+.employee-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #718096;
+  margin-top: 4px;
+}
+
+/* Alertes et messages */
+.alert {
+  padding: 16px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.alert-danger {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Indicateur de chargement */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(16, 185, 129, 0.1);
+  border-radius: 50%;
+  border-top-color: #10b981;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Message quand aucune donnée */
+.no-data {
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  color: #718096;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timesheet-table th,
+  .timesheet-table td {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+
+  .validation-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}

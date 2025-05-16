@@ -25,6 +25,7 @@ export class ProjectComponent implements OnInit {
   isEditMode = false;
   isLoading = true;
   currentEmployeeId!: number;
+  manager: any; // Liste des managers
 
   constructor(
     private projectService: ProjectService,
@@ -138,6 +139,10 @@ export class ProjectComponent implements OnInit {
   // Nouvelle méthode pour la recherche de manager
   searchManagers(event: any): void {
     // Implémentez la logique de recherche API si nécessaire
+  }
+  getManagerName(managerId: number): string {
+    const manager = this.projects.find(p => p.idmanager === managerId);
+    return manager ? manager.nom : 'Inconnu';
   }
   
 

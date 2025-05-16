@@ -109,6 +109,42 @@ export class TimesheetService {
     return date.toISOString()
   }
 
+
+
+
+
+
+
+
+
+  getTimesheetsByManager(managerId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/manager/${managerId}`).pipe(
+      tap((data) => console.log(`Timesheets pour manager ${managerId}:`, data)),
+      catchError((error) => {
+        console.error(`Erreur lors de la récupération des timesheets pour manager ${managerId}:`, error)
+        return of([])
+      }),
+    )
+  }
+
+  validateTimesheet(timesheetId: number, status: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${timesheetId}/validate`, { status }).pipe(
+      tap((data) => console.log(`Timesheet ${timesheetId} validé avec statut ${status}:`, data)),
+      catchError(this.handleError),
+    )
+  }
+
+
+
+
+  getTimesheetById(timesheetId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${timesheetId}`).pipe(
+      tap((data) => console.log(`Timesheet ${timesheetId} data:`, data)),
+      catchError(this.handleError),
+    )
+  }
+
+
   // Gestionnaire d'erreurs centralisé
   private handleError(error: HttpErrorResponse) {
     let errorMessage = ""

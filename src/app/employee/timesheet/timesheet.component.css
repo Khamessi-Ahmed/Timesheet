@@ -3,8 +3,8 @@
   --primary: #3f51b5;
   --primary-hover: #303f9f;
   --primary-light: #e8eaf6;
-  --accent: #ffa500;
-  --accent-hover: #ff8c00;
+  --accent: #10b981;
+  --accent-hover: #0ea271;
   --success: #4caf50;
   --success-hover: #388e3c;
   --warning: #ffc107;
@@ -12,12 +12,12 @@
   --error: #f44336;
   --error-hover: #d32f2f;
   --background: #f5f7fa;
-  --text: #2b2d42;
+  --text: #2d3748;
   --text-light: #6c7283;
   --border: #e5e7eb;
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 8px 15px -3px rgba(0, 0, 0, 0.15);
-  --radius: 4px;
+  --radius: 8px;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -28,77 +28,104 @@
   display: grid;
   grid-template-rows: auto auto auto 1fr;
   gap: 2rem;
-}
-
-/* Header */
-.timesheet-header {
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
-  font-size: 1.875rem;
-  color: var(--text);
-  text-align: center;
   position: relative;
-  padding-bottom: 1rem;
 }
 
-.timesheet-header::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
-  border-radius: 2px;
+/* Statut du timesheet */
+.timesheet-status-container {
+  background: white;
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
 }
 
-/* Actions - Nouveaux styles pour les boutons */
+.timesheet-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-label {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-validated {
+  background-color: rgba(76, 175, 80, 0.15);
+  color: #388e3c;
+}
+
+.status-rejected {
+  background-color: rgba(244, 67, 54, 0.15);
+  color: #d32f2f;
+}
+
+.status-pending {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffa000;
+}
+
+/* Actions - Styles améliorés pour les boutons */
 .timesheet-actions {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .action-button {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  padding: 0.75rem 1.25rem !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  letter-spacing: 0.5px !important;
-  text-transform: none !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-  transition: all 0.3s ease !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: none;
+  cursor: pointer;
+  background-color: white;
+  color: var(--text);
 }
 
 .action-button mat-icon {
-  margin-right: 4px !important;
+  margin-right: 4px;
 }
 
 .request-button {
-  background-color: var(--primary) !important;
-  color: white !important;
+  background-color: var(--accent);
+  color: white;
 }
 
 .request-button:hover {
-  background-color: var(--primary-hover) !important;
-  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3) !important;
-  transform: translateY(-2px) !important;
+  background-color: var(--accent-hover);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transform: translateY(-2px);
 }
 
 .refresh-button {
-  background-color: white !important;
-  color: var(--primary) !important;
-  border: 1px solid var(--primary) !important;
+  background-color: white;
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .refresh-button:hover {
-  background-color: var(--primary-light) !important;
-  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.15) !important;
-  transform: translateY(-2px) !important;
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.15);
+  transform: translateY(-2px);
 }
 
 /* Main Layout */
@@ -129,11 +156,114 @@
   border-bottom: 1px solid var(--border);
 }
 
+.panel-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .panel-header mat-icon {
   color: var(--primary);
   background: rgba(63, 81, 181, 0.1);
   padding: 0.5rem;
   border-radius: 8px;
+}
+
+/* Styles pour les projets */
+.project-list {
+  margin-bottom: 2rem;
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: var(--transition);
+  background: white;
+  border: 1px solid var(--border);
+}
+
+.project-item:hover {
+  transform: translateX(4px);
+  border-color: var(--primary);
+  box-shadow: 0 3px 6px rgba(63, 81, 181, 0.1);
+}
+
+.project-item.active {
+  background-color: var(--primary-light);
+  border-color: var(--primary);
+}
+
+.project-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: rgba(63, 81, 181, 0.1);
+  margin-right: 1rem;
+}
+
+.project-icon mat-icon {
+  color: var(--primary);
+}
+
+.project-info {
+  flex: 1;
+}
+
+.project-name {
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.project-tasks-count {
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+.project-arrow {
+  color: var(--text-light);
+  transition: var(--transition);
+}
+
+.project-item:hover .project-arrow,
+.project-item.active .project-arrow {
+  color: var(--primary);
+  transform: translateX(4px);
+}
+
+/* Styles pour le bouton retour */
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(63, 81, 181, 0.1);
+  color: var(--primary);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-right: 0.75rem;
+}
+
+.back-button:hover {
+  background-color: rgba(63, 81, 181, 0.2);
+}
+
+/* Styles pour les tâches */
+.project-tasks-container {
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
 }
 
 .task-list {
@@ -145,16 +275,43 @@
 }
 
 .task {
+  cursor: grab !important;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
   background: white;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
   margin-bottom: 0.75rem;
-  cursor: grab;
   transition: var(--transition);
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+.task:active {
+  cursor: grabbing !important;
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.task::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.5;
+}
+
+.task:hover::after {
+  opacity: 1;
 }
 
 .task:hover {
@@ -175,11 +332,24 @@
   font-weight: 600;
 }
 
+.task-badge.completed {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--success);
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-description {
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
 .task-deadline {
-  margin-left: auto;
   font-size: 0.875rem;
   color: var(--text-light);
-  white-space: nowrap;
 }
 
 /* Task Details */
@@ -212,6 +382,13 @@
   border-bottom: 1px solid var(--border);
 }
 
+.details-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .close-btn {
   color: var(--text-light);
   transition: var(--transition);
@@ -227,7 +404,7 @@
   margin-bottom: 1rem;
   padding: 0.75rem;
   background: rgba(63, 81, 181, 0.03);
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 
 .detail-item strong {
@@ -243,18 +420,19 @@
   box-shadow: var(--shadow);
   padding: 1.5rem;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .calendar-header {
-  display: flex;
-  flex-direction: column;
   margin-bottom: 1.5rem;
 }
 
 .calendar-header h3 {
-  margin-bottom: 0.75rem;
-  color: var(--text);
+  margin: 0;
+  font-size: 1.125rem;
   font-weight: 600;
+  color: var(--text);
 }
 
 /* FullCalendar Customization */
@@ -265,6 +443,7 @@
     --fc-event-bg-color: var(--primary);
     --fc-event-border-color: transparent;
     --fc-page-bg-color: white;
+    flex: 1;
   }
 
   .fc-toolbar-title {
@@ -302,7 +481,7 @@
   display: flex;
   align-items: center;
   padding: 0.75rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   background-color: white;
   border: 1px solid var(--border);
   margin-bottom: 0.75rem;
@@ -360,11 +539,14 @@
   color: #ffc107;
 }
 
-.no-conges {
+.no-conges,
+.no-data {
   text-align: center;
   padding: 1rem;
   color: var(--text-light);
   font-style: italic;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius);
 }
 
 /* Styles pour les statuts dans les détails */
@@ -383,185 +565,332 @@
   font-weight: 500;
 }
 
-/* Nouveau style de formulaire de congés basé sur l'image */
-.conges-form-container {
-  background: white;
-  border-radius: var(--radius);
-  padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+/* Styles pour le modal de congés - Corrigé pour éviter les problèmes d'affichage */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
 }
 
-.form-title {
-  font-size: 1.75rem;
-  color: #000;
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-weight: normal;
+.conges-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  overflow: hidden;
 }
 
-.form-subtitle {
-  color: #333;
-  margin-bottom: 2rem;
-  font-size: 1rem;
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.close-button:hover {
+  background-color: #f3f4f6;
+  color: #1f2937;
 }
 
 .conges-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  padding: 20px;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: normal;
-  color: #000;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #4b5563;
+  font-size: 14px;
 }
 
 .required {
-  color: red;
+  color: #ef4444;
   margin-left: 2px;
 }
 
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  font-size: 1rem;
-  box-sizing: border-box;
+.input-wrapper {
+  position: relative;
 }
 
-textarea.form-control {
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
   resize: vertical;
   min-height: 100px;
+  background-color: #f9fafb;
+  transition: all 0.2s;
 }
 
-.form-control:focus {
+textarea:focus {
   outline: none;
-  border-color: #666;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: white;
 }
 
-.form-control.invalid {
-  border-color: red;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-.section-title {
-  font-size: 1.25rem;
-  color: #000;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  font-weight: normal;
-}
-
-.date-fields {
+.form-row {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-.date-group {
+.form-row .form-group {
   flex: 1;
+  margin-bottom: 0;
 }
 
-.date-input-container {
+.date-input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.date-input {
+.date-input-wrapper input {
+  width: 100%;
+  padding: 12px;
   padding-right: 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9fafb;
+  transition: all 0.2s;
 }
 
-.date-icon {
+.date-input-wrapper input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: white;
+}
+
+.date-input-wrapper mat-datepicker-toggle {
   position: absolute;
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  color: #6b7280;
 }
 
-/* Cacher les styles par défaut de Material */
-:host ::ng-deep .mat-datepicker-toggle {
-  color: #000;
+.select-wrapper {
+  position: relative;
 }
 
-:host ::ng-deep .mat-form-field-underline {
-  display: none;
+.select-wrapper select {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9fafb;
+  appearance: none;
+  transition: all 0.2s;
 }
 
-:host ::ng-deep .mat-form-field-wrapper {
-  padding-bottom: 0;
+.select-wrapper select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background-color: white;
 }
 
-:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
-  padding: 0;
-  border-top: none;
+.select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
 }
 
 .form-actions {
   display: flex;
-  margin-top: 2rem;
-}
-
-.btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.3s;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .btn-cancel {
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-  margin-right: auto;
+  padding: 10px 16px;
+  background-color: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .btn-cancel:hover {
-  background-color: #e5e5e5;
+  background-color: #f3f4f6;
 }
 
 .btn-submit {
-  background-color: #007bff;
+  padding: 10px 16px;
+  background-color: #10b981;
   color: white;
-  margin-left: auto;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.btn-submit:hover:not([disabled]) {
-  background-color: #0069d9;
+.btn-submit:hover {
+  background-color: #059669;
 }
 
-.btn-submit[disabled] {
-  background-color: #b3d7ff;
+.btn-submit:disabled {
+  background-color: #d1d5db;
   cursor: not-allowed;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .date-fields {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
+/* Indicateur de chargement */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+}
 
-  .conges-form-container {
-    padding: 1.5rem;
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(63, 81, 181, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
+}
+
+/* Ajout de styles pour l'affichage des erreurs */
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-radius: var(--radius);
+  border: 1px solid #fecaca;
+}
+
+.error-alert mat-icon {
+  color: #ef4444;
+}
+
+/* Style pour l'affichage de l'ID employé */
+.employee-id-info {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-left: auto;
+  padding: 4px 8px;
+  background-color: rgba(63, 81, 181, 0.1);
+  border-radius: 4px;
+}
+
+/* Style pour l'ID du projet */
+.project-id {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+/* Style pour les dates de tâche */
+.task-dates {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* Instructions pour le drag and drop */
+.calendar-instructions {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  background-color: #e8f4fd;
+  border-radius: 4px;
+  border-left: 3px solid #2196f3;
+  font-size: 0.9rem;
+  color: #0d47a1;
+}
+
+.calendar-instructions p {
+  margin: 0;
+}
+
+/* Styles pour les messages de succès et d'erreur */
+:host ::ng-deep .success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+:host ::ng-deep .error-snackbar {
+  background-color: #f44336;
+  color: white;
 }
 
 /* Styles pour le calendrier */
@@ -569,18 +898,18 @@ textarea.form-control {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
-  margin-top: 10px;
+  margin-top: 20px;
   background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   font-size: 0.85rem;
-  color: var(--text-light);
+  color: var(--text);
 }
 
 .legend-color {
@@ -591,29 +920,64 @@ textarea.form-control {
   margin-right: 5px;
 }
 
-/* Améliorer l'affichage du calendrier */
-:host ::ng-deep .fc-event {
-  cursor: pointer;
-  font-size: 0.85rem;
-  padding: 3px 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Responsive */
+@media (max-width: 992px) {
+  .main-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 1.5rem;
+  }
+
+  .task-panel {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .task-details.show {
+    right: 50%;
+    transform: translate(50%, -50%);
+  }
+
+  .conges-modal {
+    width: 95%;
+  }
 }
 
-:host ::ng-deep .fc-daygrid-event {
-  white-space: normal;
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .timesheet-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .action-button {
+    width: 100%;
+  }
 }
 
-:host ::ng-deep .fc-day-today {
-  background-color: rgba(63, 81, 181, 0.05) !important;
-}
+@media (max-width: 576px) {
+  .timesheet-container {
+    padding: 1rem;
+  }
 
-:host ::ng-deep .fc-button {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
-  font-weight: 500 !important;
-}
+  .conges-modal {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    max-width: none;
+  }
 
-:host ::ng-deep .fc-toolbar-chunk {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  .modal-header {
+    padding: 16px;
+  }
+
+  .conges-form {
+    padding: 16px;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+  }
 }

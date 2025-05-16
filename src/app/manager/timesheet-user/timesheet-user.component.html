@@ -1,0 +1,149 @@
+<div class="timesheet-user-container">
+    <div class="header">
+      <button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Retour à la liste
+      </button>
+      <h2 class="title">Timesheet de l'employé</h2>
+    </div>
+  
+    <!-- Messages d'information -->
+    <div *ngIf="loading" class="loading-indicator">
+      <div class="spinner"></div>
+      <span>Chargement en cours...</span>
+    </div>
+    
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+  
+    <!-- Informations du timesheet -->
+    <div class="timesheet-info" *ngIf="timesheet">
+      <div class="info-card">
+        <h3>Informations générales</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">ID Timesheet:</span>
+            <span class="value">{{ timesheet.id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Date de soumission:</span>
+            <span class="value">{{ formatDate(timesheet.dateSoumission) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Heures prévues:</span>
+            <span class="value">{{ timesheet.hoursPrevent }} h</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Statut:</span>
+            <span class="value status-badge" 
+                  [ngClass]="{'status-validated': timesheet.status === 'VALIDATED', 
+                             'status-rejected': timesheet.status === 'REJECTED',
+                             'status-pending': timesheet.status === 'PENDING'}">
+              {{ timesheet.status === 'VALIDATED' ? 'Validé' : 
+                 timesheet.status === 'REJECTED' ? 'Rejeté' : 'En attente' }}
+            </span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="info-card" *ngIf="timesheet.employe">
+        <h3>Informations de l'employé</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Nom:</span>
+            <span class="value">{{ timesheet.employe.nom }} {{ timesheet.employe.prenom }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Email:</span>
+            <span class="value">{{ timesheet.employe.email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Département:</span>
+            <span class="value">{{ timesheet.employe.departement }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Tâches et Calendrier -->
+    <div class="content-grid" *ngIf="!loading && timesheet">
+      <!-- Liste des tâches -->
+      <div class="tasks-container">
+        <h3>Tâches assignées</h3>
+        <div class="tasks-list">
+          <div *ngFor="let task of tasks" class="task-item">
+            <div class="task-header">
+              <span class="task-badge" [ngClass]="{'completed': task.etat}">
+                {{ task.etat ? '✓' : '●' }}
+              </span>
+              <span class="task-title">{{ task.description }}</span>
+            </div>
+            <div class="task-details">
+              <div class="task-date" *ngIf="task.debutdateAffaire">
+                <mat-icon>calendar_today</mat-icon>
+                <span>{{ formatDate(task.debutdateAffaire) }} - {{ formatDate(task.FindateAffaire) }}</span>
+              </div>
+              <div class="task-deadline" *ngIf="task.deadline">
+                <mat-icon>alarm</mat-icon>
+                <span>Échéance: {{ formatDate(task.deadline) }}</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="tasks.length === 0" class="no-data">
+            Aucune tâche assignée
+          </div>
+        </div>
+  
+        <!-- Liste des congés -->
+        <h3>Congés demandés</h3>
+        <div class="conges-list">
+          <div *ngFor="let conge of conges" class="conge-item">
+            <div class="conge-header">
+              <span class="conge-badge" [ngStyle]="{'background-color': getCongeColor(conge.status)}"></span>
+              <span class="conge-title">{{ conge.type }}</span>
+              <span class="conge-status" [ngClass]="conge.status.toLowerCase()">{{ conge.status }}</span>
+            </div>
+            <div class="conge-details">
+              <div class="conge-date">
+                <mat-icon>date_range</mat-icon>
+                <span>{{ formatDate(conge.dateDebut) }} - {{ formatDate(conge.dateFin) }}</span>
+              </div>
+              <div class="conge-description">
+                <mat-icon>description</mat-icon>
+                <span>{{ conge.description }}</span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="conges.length === 0" class="no-data">
+            Aucun congé demandé
+          </div>
+        </div>
+      </div>
+  
+      <!-- Calendrier -->
+      <div class="calendar-container">
+        <h3>Calendrier des activités</h3>
+        <div class="calendar-legend">
+          <span class="legend-item">
+            <span class="legend-color" style="background-color: #4CAF50;"></span>
+            Tâches terminées
+          </span>
+          <span class="legend-item">
+            <span class="legend-color" style="background-color: #2196F3;"></span>
+            Tâches en cours
+          </span>
+          <span class="legend-item">
+            <span class="legend-color" style="background-color: #FFC107;"></span>
+            Congés en attente
+          </span>
+          <span class="legend-item">
+            <span class="legend-color" style="background-color: #F44336;"></span>
+            Congés refusés
+          </span>
+        </div>
+        <full-calendar [options]="calendarOptions"></full-calendar>
+      </div>
+    </div>
+  </div>
+  

@@ -6,6 +6,7 @@ import { EmpLayoutComponent } from './employee/emp-layout/emp-layout.component';
 import { ManLayoutComponent } from './manager/man-layout/man-layout.component';
 import { TacheComponent } from './employee/tache/tache.component';
 import { ManProjectComponent } from './manager/man-project/man-project.component';
+import { TimesheetUserComponent } from './manager/timesheet-user/timesheet-user.component';
 
 
 export const routes: Routes = [
@@ -19,10 +20,7 @@ export const routes: Routes = [
         path:'adminLayout',
         component:LayoutComponent,
     },
-    {
-        path:'dashboard',
-        component:DashboardComponent
-    },{
+   {
         path:'employee',
         component:EmpLayoutComponent
     },
@@ -30,6 +28,7 @@ export const routes: Routes = [
         path:'manager',
         component:ManLayoutComponent
     },
+    
     {
         path: 'EmpeloyeeTache',
         component: TacheComponent,
@@ -37,5 +36,12 @@ export const routes: Routes = [
       {
         path:'managerTache',
         component:ManProjectComponent
-      }
+      },
+      {
+        path:'timesheet-user',
+        component:TimesheetUserComponent
+      },
+     
+    
+
 ];

@@ -69,6 +69,17 @@
                 <span>conges</span>
               </a>
             </li>
+            <li (click)="currentView = 'listTimesheet'" [class.active]="currentView === 'listTimesheet'">
+              <a  class="nav-link">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7"></circle>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                  </svg>
+                </span>
+                <span>list timesheet</span>
+              </a>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -80,6 +91,7 @@
             <app-man-notification *ngSwitchCase="'Notification'"></app-man-notification>
             <app-man-dashboard *ngSwitchCase="'dashboard'"></app-man-dashboard>
             <app-conges *ngSwitchCase="'conges'"></app-conges>
+            <app-list-timesheet  *ngSwitchCase="'listTimesheet'"></app-list-timesheet>
           <p *ngSwitchDefault>Select a view from the sidebar</p>
         </ng-container>
       </div>

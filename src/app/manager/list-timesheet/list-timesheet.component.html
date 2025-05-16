@@ -1,0 +1,98 @@
+<app-dashboard></app-dashboard>
+<div class="timesheet-container">
+  <div class="header">
+    <h1 class="title">Liste des Timesheets</h1>
+  </div>
+  
+  <div class="subheader">
+    <div class="done-count">
+      <span class="dot"></span>
+      <span class="count">{{ timesheets.length }} timesheets</span>
+      <span class="period">ce mois-ci</span>
+    </div>
+  </div>
+  
+  <!-- Messages d'information -->
+  <div *ngIf="loading" class="loading-indicator">
+    <div class="spinner"></div>
+    <span>Chargement en cours...</span>
+  </div>
+  
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+  
+  <div *ngIf="successMessage" class="alert alert-success">
+    {{ successMessage }}
+  </div>
+  
+  <!-- Tableau des timesheets -->
+  <div class="table-responsive" *ngIf="timesheets.length > 0">
+    <table class="timesheet-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Employé</th>
+          <th>Date de soumission</th>
+          <th>Heures prévues</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let timesheet of timesheets">
+          <td>{{ timesheet.id }}</td>
+          <td *ngIf="timesheet.employe">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background-color: #3b82f6; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                {{ timesheet.employe.nom.charAt(0) }}{{ timesheet.employe.prenom.charAt(0) }}
+              </div>
+              <div>
+                <div style="font-weight: 500;">{{ timesheet.employe.nom }} {{ timesheet.employe.prenom }}</div>
+                <div class="employee-details">
+                  <small>{{ timesheet.employe.email }}</small>
+                  <small>Département: {{ timesheet.employe.departement }}</small>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td *ngIf="!timesheet.employe">Non assigné</td>
+          <td>{{ formatDate(timesheet.dateSoumission) }}</td>
+          <td>{{ timesheet.hoursPrevent }} h</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(timesheet.status)">
+              {{ timesheet.status === 'VALIDATED' ? 'Validé' : 
+                 timesheet.status === 'REJECTED' ? 'Rejeté' : 'En attente' }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <div class="validation-controls">
+              <select #statusSelect class="status-select" [value]="timesheet.status">
+                <option *ngFor="let option of statusOptions" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+              <button 
+                class="validate-btn" 
+                (click)="validateTimesheet(timesheet, statusSelect.value)"
+                [disabled]="loading || timesheet.status === statusSelect.value">
+                Valider
+              </button>
+              <button 
+                class="enter-btn" 
+                (click)="enterTimesheet(timesheet.employe?.id || 0, timesheet.id)"
+                [disabled]="loading">
+                Entrer
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Message si aucun timesheet -->
+  <div *ngIf="!loading && timesheets.length === 0" class="no-data">
+    <p>Aucun timesheet disponible pour le moment.</p>
+  </div>
+</div>

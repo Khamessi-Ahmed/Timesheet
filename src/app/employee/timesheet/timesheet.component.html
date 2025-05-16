@@ -1,31 +1,50 @@
 <div class="timesheet-container">
+  <!-- Affichage du statut du timesheet -->
+  <div class="timesheet-status-container">
+    <div class="timesheet-status" *ngIf="timesheet">
+      <span class="status-label">Statut du timesheet:</span>
+      <span class="status-badge" [ngClass]="getStatusClass(timesheet.status)">
+        {{ getStatusLabel(timesheet.status) }}
+      </span>
+    </div>
+  </div>
+
   <div class="timesheet-actions">
-    <button mat-raised-button class="action-button request-button" (click)="toggleCongesForm()">
+    <button class="action-button refresh-button" (click)="reloadTasks()">
+      <mat-icon>refresh</mat-icon>
+      <span>Actualiser les tâches</span>
+    </button>
+    <button class="action-button request-button" (click)="toggleCongesForm()">
       <mat-icon>event_available</mat-icon>
       <span>{{ showCongesForm ? 'Annuler' : 'Demander un congé' }}</span>
     </button>
-    <button mat-raised-button class="action-button refresh-button" (click)="reloadConges()">
+    <button class="action-button refresh-button" (click)="reloadConges()">
       <mat-icon>refresh</mat-icon>
       <span>Actualiser les congés</span>
     </button>
   </div>
 
-  <!-- Formulaire de congés intégré avec style inspiré de l'image -->
-  <div class="conges-form-container" *ngIf="showCongesForm">
-    <h1 class="form-title">Demande de congé</h1>
-    <p class="form-subtitle">Remplissez le formulaire ci-dessous pour soumettre votre demande de congé</p>
-
+  <!-- Formulaire de congés modernisé avec correction des problèmes d'affichage -->
+  <div class="modal-backdrop" *ngIf="showCongesForm" (click)="toggleCongesForm()"></div>
+  <div class="conges-modal" *ngIf="showCongesForm">
+    <div class="modal-header">
+      <h2>Demande de congé</h2>
+      <button class="close-button" (click)="toggleCongesForm()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
     <form [formGroup]="congesForm" (ngSubmit)="submitCongesForm()" class="conges-form">
-      <!-- Section Description -->
       <div class="form-group">
         <label for="description">Description<span class="required">*</span></label>
-        <textarea 
-          id="description"
-          formControlName="description" 
-          rows="5"
-          class="form-control"
-          [ngClass]="{'invalid': congesForm.get('description')?.invalid && congesForm.get('description')?.touched}"
-        ></textarea>
+        <div class="input-wrapper">
+          <textarea 
+            id="description"
+            formControlName="description" 
+            rows="4"
+            placeholder="Décrivez la raison de votre demande de congé"
+          ></textarea>
+        </div>
         <div class="error-message" *ngIf="congesForm.get('description')?.hasError('required') && congesForm.get('description')?.touched">
           La description est requise
         </div>
@@ -34,20 +53,18 @@
         </div>
       </div>
 
-      <!-- Section Dates -->
-      <h2 class="section-title">Période de congé</h2>
-      <div class="date-fields">
-        <div class="form-group date-group">
+      <div class="form-row">
+        <div class="form-group">
           <label for="dateDebut">Date de début<span class="required">*</span></label>
-          <div class="date-input-container">
+          <div class="date-input-wrapper">
             <input 
+            type="date"
               id="dateDebut"
               formControlName="dateDebut" 
-              [matDatepicker]="pickerStart"
-              class="form-control date-input"
-              [ngClass]="{'invalid': congesForm.get('dateDebut')?.invalid && congesForm.get('dateDebut')?.touched}"
+            
+              placeholder="JJ/MM/AAAA"
             >
-            <mat-datepicker-toggle matSuffix [for]="pickerStart" class="date-icon"></mat-datepicker-toggle>
+        
             <mat-datepicker #pickerStart></mat-datepicker>
           </div>
           <div class="error-message" *ngIf="congesForm.get('dateDebut')?.hasError('required') && congesForm.get('dateDebut')?.touched">
@@ -55,51 +72,52 @@
           </div>
         </div>
 
-        <div class="form-group date-group">
+        <div class="form-group">
           <label for="dateFin">Date de fin<span class="required">*</span></label>
-          <div class="date-input-container">
+          <div class="date-input-wrapper">
             <input 
+            type="date"
               id="dateFin"
               formControlName="dateFin" 
-              [matDatepicker]="pickerEnd"
-              class="form-control date-input"
-              [ngClass]="{'invalid': congesForm.get('dateFin')?.invalid && congesForm.get('dateFin')?.touched}"
+             
+              placeholder="JJ/MM/AAAA"
             >
-            <mat-datepicker-toggle matSuffix [for]="pickerEnd" class="date-icon"></mat-datepicker-toggle>
+           
             <mat-datepicker #pickerEnd></mat-datepicker>
           </div>
           <div class="error-message" *ngIf="congesForm.get('dateFin')?.hasError('required') && congesForm.get('dateFin')?.touched">
             La date de fin est requise
           </div>
+          <div class="error-message" *ngIf="congesForm.get('dateFin')?.hasError('dateInvalid')">
+            La date de fin doit être postérieure à la date de début
+          </div>
         </div>
       </div>
 
-      <!-- Section Type de congé -->
-      <h2 class="section-title">Type de congé</h2>
       <div class="form-group">
         <label for="type">Type de congé<span class="required">*</span></label>
-        <select 
-          id="type"
-          formControlName="type" 
-          class="form-control"
-          [ngClass]="{'invalid': congesForm.get('type')?.invalid && congesForm.get('type')?.touched}"
-        >
-          <option value="" disabled selected>Sélectionnez un type de congé</option>
-          <option *ngFor="let option of typeOptions" [value]="option.value">
-            {{ option.label }}
-          </option>
-        </select>
+        <div class="select-wrapper">
+          <select 
+            id="type"
+            formControlName="type"
+          >
+            <option value="" disabled selected>Sélectionnez un type de congé</option>
+            <option *ngFor="let option of typeOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+          <mat-icon class="select-icon">arrow_drop_down</mat-icon>
+        </div>
         <div class="error-message" *ngIf="congesForm.get('type')?.hasError('required') && congesForm.get('type')?.touched">
           Le type de congé est requis
         </div>
       </div>
 
-      <!-- Boutons d'action -->
       <div class="form-actions">
-        <button type="button" class="btn btn-cancel" (click)="toggleCongesForm()">
+        <button type="button" class="btn-cancel" (click)="toggleCongesForm()">
           Annuler
         </button>
-        <button type="submit" class="btn btn-submit" [disabled]="congesForm.invalid || loading">
+        <button type="submit" class="btn-submit" [disabled]="congesForm.invalid || loading">
           {{ loading ? 'Soumission en cours...' : 'Soumettre' }}
         </button>
       </div>
@@ -107,17 +125,72 @@
   </div>
 
   <div class="main-container">
-    <!-- Le reste du contenu reste inchangé -->
-    <!-- Liste des tâches (glissables) -->
+    <!-- Panneau de gauche: Projets et tâches -->
     <div class="task-panel">
-      <div class="panel-header">
-        <h3>Tâches disponibles</h3>
+      <!-- Affichage du chargement -->
+      <div *ngIf="loading" class="loading-indicator">
+        <div class="spinner"></div>
+        <span>Chargement en cours...</span>
       </div>
-      <div class="task-list" id="task-list-container">
-        <div *ngFor="let task of tasks" class="task" [attr.data-task]="task | json" (click)="showTaskDetails(task)">
-          <div class="task-badge">{{ task.etat ? '✓' : '●' }}</div>
-          {{ task.description }}
-          <div class="task-deadline">{{ task.deadline | date: 'shortDate' }}</div>
+
+      <!-- Message d'erreur -->
+      <div *ngIf="error" class="error-alert">
+        <mat-icon>error</mat-icon>
+        <span>{{ error }}</span>
+      </div>
+
+      <!-- Liste des projets -->
+      <div *ngIf="!selectedProject">
+        <div class="panel-header">
+          <h3>Mes projets</h3>
+          <div class="employee-id-info">ID Employé: {{ employeeId }}</div>
+        </div>
+        <div class="project-list" id="project-list-container">
+          <div *ngFor="let project of projects" 
+               class="project-item" 
+               [class.active]="selectedProject && selectedProject.id === project.id"
+               (click)="selectProject(project)">
+            <div class="project-icon">
+              <mat-icon>folder</mat-icon>
+            </div>
+            <div class="project-info">
+              <div class="project-name">{{ project.name || project.nom || 'Projet sans nom' }}</div>
+              <div class="project-tasks-count">{{ getProjectTasksCount(project) }} tâches</div>
+              <div class="project-id">ID: {{ project.id }}</div>
+            </div>
+            <mat-icon class="project-arrow">chevron_right</mat-icon>
+          </div>
+          <div *ngIf="projects.length === 0 && !loading" class="no-data">
+            Aucun projet disponible
+          </div>
+        </div>
+      </div>
+      
+      <!-- Liste des tâches du projet sélectionné -->
+      <div *ngIf="selectedProject" class="project-tasks-container">
+        <div class="panel-header">
+          <button class="back-button" (click)="deselectProject()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <h3>Tâches: {{ selectedProject.name || selectedProject.nom }}</h3>
+        </div>
+        <div class="task-list" id="task-list-container">
+          <div *ngFor="let task of projectTasks" 
+               class="task" 
+               [attr.data-task]="task | json" 
+               (click)="showTaskDetails(task)">
+            <div class="task-badge" [class.completed]="task.etat">{{ task.etat ? '✓' : '●' }}</div>
+            <div class="task-content">
+              <div class="task-description">{{ task.description }}</div>
+              <div class="task-deadline" *ngIf="task.deadline">{{ task.deadline | date: 'dd/MM/yyyy' }}</div>
+              <div class="task-dates" *ngIf="task.debutdateAffaire">
+                {{ task.debutdateAffaire | date: 'dd/MM/yyyy' }} - {{ task.FindateAffaire | date: 'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+          <div *ngIf="projectTasks.length === 0 && !loading" class="no-data">
+            Aucune tâche disponible pour ce projet
+          </div>
         </div>
       </div>
       
@@ -131,14 +204,14 @@
           <div class="conge-info">
             <div class="conge-type">{{ conge.type }}</div>
             <div class="conge-dates">
-              {{ conge.dateDebut | date: 'shortDate' }} - {{ conge.dateFin | date: 'shortDate' }}
+              {{ conge.dateDebut | date: 'dd/MM/yyyy' }} - {{ conge.dateFin | date: 'dd/MM/yyyy' }}
             </div>
           </div>
           <div class="conge-status" [ngClass]="conge.status.toLowerCase()">
             {{ conge.status }}
           </div>
         </div>
-        <div *ngIf="conges.length === 0" class="no-conges">
+        <div *ngIf="conges.length === 0 && !loading" class="no-conges">
           Aucun congé demandé
         </div>
       </div>
@@ -160,13 +233,16 @@
           <strong>Statut :</strong> {{ selectedTask.etat ? 'Terminée' : 'En attente' }}
         </div>
         <div class="detail-item" *ngIf="selectedTask.deadline">
-          <strong>Échéance :</strong> {{ selectedTask.deadline | date: 'mediumDate' }}
+          <strong>Échéance :</strong> {{ selectedTask.deadline | date: 'dd/MM/yyyy' }}
         </div>
         <div class="detail-item" *ngIf="selectedTask.debutdateAffaire">
-          <strong>Date de début :</strong> {{ selectedTask.debutdateAffaire | date: 'medium' }}
+          <strong>Date de début :</strong> {{ selectedTask.debutdateAffaire | date: 'dd/MM/yyyy HH:mm' }}
         </div>
         <div class="detail-item" *ngIf="selectedTask.FindateAffaire">
-          <strong>Date de fin :</strong> {{ selectedTask.FindateAffaire | date: 'medium' }}
+          <strong>Date de fin :</strong> {{ selectedTask.FindateAffaire | date: 'dd/MM/yyyy HH:mm' }}
+        </div>
+        <div class="detail-item" *ngIf="selectedTask.project">
+          <strong>Projet :</strong> {{ selectedTask.project.name || selectedTask.project.nom }}
         </div>
       </div>
       
@@ -185,10 +261,10 @@
           </span>
         </div>
         <div class="detail-item">
-          <strong>Date de début :</strong> {{ selectedConge.dateDebut | date: 'fullDate' }}
+          <strong>Date de début :</strong> {{ selectedConge.dateDebut | date: 'dd/MM/yyyy' }}
         </div>
         <div class="detail-item">
-          <strong>Date de fin :</strong> {{ selectedConge.dateFin | date: 'fullDate' }}
+          <strong>Date de fin :</strong> {{ selectedConge.dateFin | date: 'dd/MM/yyyy' }}
         </div>
         <div class="detail-item" *ngIf="selectedConge.status === 'REFUSE'">
           <strong>Raison du refus :</strong> {{ selectedConge.commentaire || 'Non spécifiée' }}
@@ -199,27 +275,32 @@
     <!-- Calendrier -->
     <div class="calendar-container">
       <div class="calendar-header">
-        <h3>Aperçu du planning et des congés</h3>
-        <div class="calendar-legend">
-          <span class="legend-item">
-            <span class="legend-color" style="background-color: #4CAF50 ;"></span>
-            Tâches
-          </span>
-          <span class="legend-item">
-            <span class="legend-color" style="background-color: #FFC107;"></span>
-            Congés en attente
-          </span>
-          <span class="legend-item">
-            <span class="legend-color" style="background-color:#2196F3;"></span>
-            Congés approuvés
-          </span>
-          <span class="legend-item">
-            <span class="legend-color" style="background-color: #F44336;"></span>
-            Congés refusés
-          </span>
+        <h3>Planning et congés</h3>
+        <div class="calendar-instructions">
+          <p>Glissez-déposez les tâches depuis la liste vers le calendrier pour les planifier</p>
         </div>
       </div>
       <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+      
+      <!-- Légende du calendrier déplacée en dessous -->
+      <div class="calendar-legend">
+        <span class="legend-item">
+          <span class="legend-color" style="background-color: #4CAF50;"></span>
+          Tâches terminées
+        </span>
+        <span class="legend-item">
+          <span class="legend-color" style="background-color: #2196F3;"></span>
+          Tâches en cours
+        </span>
+        <span class="legend-item">
+          <span class="legend-color" style="background-color: #FFC107;"></span>
+          Congés en attente
+        </span>
+        <span class="legend-item">
+          <span class="legend-color" style="background-color: #F44336;"></span>
+          Congés refusés
+        </span>
+      </div>
     </div>
   </div>
 </div>

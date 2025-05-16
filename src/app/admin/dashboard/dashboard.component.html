@@ -11,8 +11,8 @@
           </svg>
         </div>
         <div class="stat-info">
-          <h3 class="stat-title">Total Customers</h3>
-          <p class="stat-value">5,423</p>
+          <h3 class="stat-title">Total Employee</h3>
+          <p class="stat-value">{{ loading ? 'Chargement...' : totalEmployees }}</p>
           <p class="stat-change positive">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="18 15 12 9 6 15"></polyline>
@@ -30,8 +30,8 @@
           </svg>
         </div>
         <div class="stat-info">
-          <h3 class="stat-title">Members</h3>
-          <p class="stat-value">1,893</p>
+          <h3 class="stat-title">total manager</h3>
+          <p class="stat-value">{{ loading ? 'Chargement...' : totalManagers }}</p>
           <p class="stat-change negative">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
@@ -50,8 +50,8 @@
           </svg>
         </div>
         <div class="stat-info">
-          <h3 class="stat-title">Active Now</h3>
-          <p class="stat-value">189</p>
+          <h3 class="stat-title">total project </h3>
+          <p class="stat-value">{{ loading ? 'Chargement...' : totalProjects }}</p>
         </div>
       </div>
     </div>

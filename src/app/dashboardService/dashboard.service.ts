@@ -15,6 +15,13 @@ export interface DashboardOverview {
   delayRate: number;
   totalWarnings: number;
 }
+export interface EmployeeWorkload {
+  employeeName: string;
+  departement: string;
+  totalAssignedTasks: number;
+  pendingTasks: number;
+  hoursWorked: number;
+}
 
 export interface AllProjectsProgress {
   projects: {
@@ -113,5 +120,17 @@ export class DashboardService {
   // Additional methods for team progress based on timesheets
   getTeamProgressByManager(managerId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/team/progress/manager/${managerId}`);
+  }
+
+  getTotalManagers(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/managers/count`)
+  }
+
+  getTotalEmployees(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/employees/count`)
+  }
+
+  getTotalProjects(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/projects/count`)
   }
 }

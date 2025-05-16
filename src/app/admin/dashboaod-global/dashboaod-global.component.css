@@ -1,0 +1,369 @@
+/* Main Dashboard Container */
+.dashboard-container {
+    padding: 20px;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1e293b;
+    background-color: #f8fafc;
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  /* Loading and Error States */
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  
+  .spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #06d6a0;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .error-message {
+    background-color: #fee2e2;
+    color: #ef4444;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    text-align: center;
+  }
+  
+  /* Top Section with Charts and Metrics */
+  .top-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  
+  .chart-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .chart-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #475569;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  
+  .chart-wrapper {
+    height: 200px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  
+  .percentage-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #64748b;
+  }
+  
+  .status-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .status-button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .in-progress {
+    background-color: #ff6b6b;
+    color: white;
+  }
+  
+  .in-progress.dark {
+    background-color: #475569;
+    color: white;
+  }
+  
+  .completed {
+    background-color: #06d6a0;
+    color: white;
+  }
+  
+  /* Metrics Grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  .metric-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+  
+  .metric-card.pink {
+    background-color: #ffe2e2;
+  }
+  
+  .metric-card.yellow {
+    background-color: #fff8e1;
+  }
+  
+  .metric-card.green {
+    background-color: #e3fcef;
+  }
+  
+  .metric-card.purple {
+    background-color: #f3e8ff;
+  }
+  
+  .metric-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .projects-icon {
+    background-color: #ff6b6b;
+  }
+  
+  .tasks-icon {
+    background-color: #ffa94d;
+  }
+  
+  .completed-icon {
+    background-color: #51cf66;
+  }
+  
+  .team-icon {
+    background-color: #9775fa;
+  }
+  
+  .metric-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .metric-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+  
+  .metric-label {
+    font-size: 14px;
+    color: #475569;
+    font-weight: 500;
+  }
+  
+  .metric-sub {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 4px;
+  }
+  
+  .metric-trend {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 8px;
+  }
+  
+  /* Project Progress Section */
+  .progress-section {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  
+  .chart-date-range {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 24px;
+  }
+  
+  .progress-chart-wrapper {
+    height: 200px;
+    margin-bottom: 16px;
+  }
+  
+  .pagination-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+  }
+  
+  .dot.active {
+    background-color: #94a3b8;
+  }
+  
+  /* Workload Section */
+  .workload-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  
+  .employee-workload,
+  .department-workload {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .employee-list {
+    margin-top: 24px;
+  }
+  
+  .employee-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .employee-name {
+    width: 150px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .progress-container {
+    flex: 1;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    margin: 0 16px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #51cf66 0%, #a9e34b 100%);
+    border-radius: 4px;
+  }
+  
+  .progress-percentage {
+    width: 80px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  
+  .correct-label {
+    font-weight: 400;
+    color: #94a3b8;
+  }
+  
+  .department-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .activity-label {
+    font-size: 14px;
+    color: #64748b;
+  }
+  
+  .month-dropdown {
+    font-size: 14px;
+    color: #1e293b;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .department-chart-wrapper {
+    height: 250px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 1024px) {
+    .top-section {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .metrics-grid {
+      grid-column: span 2;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .top-section {
+      grid-template-columns: 1fr;
+    }
+  
+    .metrics-grid {
+      grid-column: span 1;
+    }
+  
+    .workload-section {
+      grid-template-columns: 1fr;
+    }
+  }
+  

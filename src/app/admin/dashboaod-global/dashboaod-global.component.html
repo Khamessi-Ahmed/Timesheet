@@ -1,0 +1,144 @@
+<app-dashboard></app-dashboard>
+<div class="dashboard-container">
+    <div *ngIf="loading.overview || loading.projects || loading.tasks || loading.workload" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Chargement des données...</p>
+    </div>
+  
+    <div *ngIf="error.overview || error.projects || error.tasks || error.workload" class="error-message">
+      <p>Une erreur s'est produite lors du chargement des données. Veuillez réessayer.</p>
+    </div>
+  
+    <!-- Top Section with Charts and Metrics -->
+    <div class="top-section" *ngIf="dashboardOverview && !loading.overview && !error.overview">
+      <!-- Left: Project Completion Chart -->
+      <div class="chart-card">
+        <h3 class="chart-title">Project Completion</h3>
+        <div class="chart-wrapper">
+          <canvas id="projectCompletionChart"></canvas>
+        </div>
+        <div class="percentage-labels">
+          <div class="percentage-label">{{ dashboardOverview.projectCompletionRate | number:'1.0-0' }}%</div>
+          <div class="percentage-label">{{ 100 - dashboardOverview.projectCompletionRate | number:'1.0-0' }}%</div>
+        </div>
+        <div class="status-buttons">
+          <span class="status-button in-progress">IN PROGRESS</span>
+          <span class="status-button completed">COMPLETED</span>
+        </div>
+      </div>
+  
+      <!-- Middle: Task Completion Chart -->
+      <div class="chart-card">
+        <h3 class="chart-title">Task Completion</h3>
+        <div class="chart-wrapper">
+          <canvas id="taskCompletionChart"></canvas>
+        </div>
+        <div class="percentage-labels">
+          <div class="percentage-label">{{ dashboardOverview.taskCompletionRate | number:'1.0-0' }}%</div>
+          <div class="percentage-label">{{ 100 - dashboardOverview.taskCompletionRate | number:'1.0-0' }}%</div>
+        </div>
+        <div class="status-buttons">
+          <span class="status-button in-progress dark">IN PROGRESS</span>
+          <span class="status-button completed">COMPLETED</span>
+        </div>
+      </div>
+  
+      <!-- Right: Metric Cards -->
+      <div class="metrics-grid">
+        <div class="metric-card pink">
+          <div class="metric-icon projects-icon">
+            <i class="fas fa-project-diagram"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value">{{ dashboardOverview.totalProjects }}</div>
+            <div class="metric-label">project</div>
+            <div class="metric-trend">+5% from yesterday</div>
+          </div>
+        </div>
+        
+        <div class="metric-card yellow">
+          <div class="metric-icon tasks-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value">{{ dashboardOverview.delayedTasks }}</div>
+            <div class="metric-label">delayedTask</div>
+            <div class="metric-trend">-2% from yesterday</div>
+          </div>
+        </div>
+        
+        <div class="metric-card green">
+          <div class="metric-icon completed-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value">{{ dashboardOverview.completedTasks }}</div>
+            <div class="metric-label">Task</div>
+            <div class="metric-sub">Sold</div>
+            <div class="metric-trend">+12% from yesterday</div>
+          </div>
+        </div>
+        
+        <div class="metric-card purple">
+          <div class="metric-icon team-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="metric-content">
+            <div class="metric-value">{{ dashboardOverview.totalEmployees }}</div>
+            <div class="metric-label">team</div>
+            <div class="metric-sub">members</div>
+            <div class="metric-trend">+3% from yesterday</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Project Progress Overview Section -->
+    <div class="progress-section" *ngIf="projectsProgress && !loading.projects && !error.projects">
+      <h2 class="section-title">Project Progress Overview</h2>
+      <div class="chart-date-range">
+        {{ projectsProgress.projects.length }} Projects - {{ projectsProgress.completionRate | number:'1.0-0' }}% Overall Completion
+      </div>
+      <div class="progress-chart-wrapper">
+        <canvas id="projectProgressChart"></canvas>
+      </div>
+      <div class="pagination-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+  
+    <!-- Bottom Section with Workload -->
+    <div class="workload-section" *ngIf="workloadDistribution && !loading.workload && !error.workload">
+      <!-- Left: Employee Workload -->
+      <div class="employee-workload">
+        <h2 class="section-title">Top 3 Employee Workload</h2>
+        <div class="employee-list">
+          <div class="employee-item" *ngFor="let employee of workloadDistribution.employeeWorkloads.slice(0, 3); let i = index">
+            <div class="employee-name">{{ employee.employeeName || getEmployeeName(i) }}</div>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="getWorkloadPercentage(employee)"></div>
+            </div>
+            <div class="progress-percentage">{{ getWorkloadPercentage(employee) }}% <span class="correct-label">Correct</span></div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Right: Department Workload -->
+      <div class="department-workload">
+        <div class="department-header">
+          <h2 class="section-title">Department Workload</h2>
+          <div class="filter-controls">
+            <div class="activity-label">Activity</div>
+            <div class="month-dropdown">
+              Month <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="department-chart-wrapper">
+          <canvas id="departmentWorkloadChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
